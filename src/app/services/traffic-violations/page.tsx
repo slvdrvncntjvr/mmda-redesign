@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { ArrowRight, MagnifyingGlass, ShieldCheck, CreditCard, CaretLeft, CheckCircle, Wallet, Bank, Storefront, CurrencyCircleDollar } from "@phosphor-icons/react";
 import { useSettingsStore } from "@/stores/useSettingsStore";
@@ -66,12 +66,12 @@ export default function TrafficViolationsPage() {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<LookupFormData>({ mode: "onBlur", defaultValues: { searchBy: "plate" } });
 
-  const searchBy = watch("searchBy");
+  const searchBy = useWatch({ control, name: "searchBy" });
 
   function onSubmit(data: LookupFormData) {
     const result = lookupSchema.safeParse(data);
@@ -134,7 +134,7 @@ export default function TrafficViolationsPage() {
           </p>
 
           <div className="mt-8 space-y-4">
-            {mockViolations.map((v, index) => {
+            {mockViolations.map((v) => {
               const isUnpaid = v.status === "unpaid";
               const unpaidIndex = isUnpaid ? unpaidViolations.indexOf(v) : -1;
               const isSelected = isUnpaid && selectedFines.includes(unpaidIndex);
@@ -371,7 +371,7 @@ export default function TrafficViolationsPage() {
         </div>
       </section>
 
-      <section id="lookup-form" className="mx-auto max-w-7xl px-4 pt-16 pb-24 sm:px-6 lg:px-8 lg:pt-24 lg:pb-32">
+      <section id="lookup-form" className="mx-auto max-w-7xl scroll-mt-32 px-4 pt-16 pb-24 sm:px-6 lg:px-8 lg:pt-24 lg:pb-32">
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="space-y-4">
             <Card className="rounded-[1.75rem] border-border">

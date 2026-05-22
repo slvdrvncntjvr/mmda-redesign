@@ -19,9 +19,16 @@ const pages = [
   {
     title: "About MMDA",
     titleFil: "Tungkol sa MMDA",
-    href: "/transparency/about",
+    href: "/about",
     description: "Mandate, charter commitments, frontline offices, and history.",
     descriptionFil: "Mandato, charter commitments, frontline offices, at kasaysayan.",
+  },
+  {
+    title: "Transparency Overview",
+    titleFil: "Pangkalahatang Transparency",
+    href: "/transparency",
+    description: "Organizational profile, citizen charter, plans, and reports.",
+    descriptionFil: "Organizational profile, citizen charter, mga plano, at ulat.",
   },
   {
     title: "Contact",
@@ -96,6 +103,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   useEffect(() => {
     if (!open) return;
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     function trapFocus(e: KeyboardEvent) {
       if (e.key !== "Tab" || !dialogRef.current) return;
 
@@ -121,7 +131,10 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     }
 
     document.addEventListener("keydown", trapFocus);
-    return () => document.removeEventListener("keydown", trapFocus);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", trapFocus);
+    };
   }, [open]);
 
   const results = useMemo(() => {
@@ -202,7 +215,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             />
             <button
               onClick={() => onOpenChange(false)}
-              className="flex size-7 items-center justify-center rounded-md border border-border text-xs text-muted-foreground hover:bg-muted"
+              className="flex size-11 items-center justify-center rounded-full border border-border text-xs text-muted-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label={language === "en" ? "Close search dialog" : "Isara ang search dialog"}
             >
               <X className="size-3.5" weight="bold" />

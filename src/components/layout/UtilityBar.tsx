@@ -60,6 +60,7 @@ export function UtilityBar() {
           onClick={() => setLanguage(language === "en" ? "fil" : "en")}
           className="h-8 gap-1.5 rounded-full border border-white/10 px-3 text-xs text-white/72 hover:bg-white/10 hover:text-white"
           aria-label={`Switch language to ${language === "en" ? "Filipino" : "English"}`}
+          title={`Switch language to ${language === "en" ? "Filipino" : "English"}`}
         >
           <Globe className="size-3.5" weight="bold" />
           <span>{language === "en" ? "EN" : "FIL"}</span>
@@ -71,6 +72,8 @@ export function UtilityBar() {
           onClick={toggleDarkMode}
           className="h-8 rounded-full border border-white/10 px-3 text-xs text-white/72 hover:bg-white/10 hover:text-white"
           aria-label={darkMode ? t("util.lightMode", language) : t("util.darkMode", language)}
+          aria-pressed={darkMode}
+          title={darkMode ? t("util.lightMode", language) : t("util.darkMode", language)}
         >
           {darkMode ? (
             <Sun className="size-3.5" weight="bold" />
@@ -109,7 +112,9 @@ export function UtilityBar() {
             <DropdownMenuItem onClick={toggleHighContrast}>
               <EyeSlash className="mr-2 size-4" weight="bold" />
               {t("util.highContrast", language)}
-              {highContrast && " ✓"}
+              <span className="ml-auto text-xs text-muted-foreground">
+                {highContrast ? (language === "en" ? "On" : "Naka-on") : (language === "en" ? "Off" : "Naka-off")}
+              </span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

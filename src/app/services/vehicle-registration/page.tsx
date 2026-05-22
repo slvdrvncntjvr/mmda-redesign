@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { ArrowRight, Car, CheckCircle, ListChecks, MagnifyingGlass } from "@phosphor-icons/react";
 import { useSettingsStore } from "@/stores/useSettingsStore";
@@ -56,11 +56,11 @@ export default function VehicleRegistrationPage() {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<RegistrationFormData>({ mode: "onBlur" });
 
-  const registrationType = watch("registrationType");
+  const registrationType = useWatch({ control, name: "registrationType" });
 
   function onSubmit(data: RegistrationFormData) {
     const result = registrationSchema.safeParse(data);
@@ -152,7 +152,7 @@ export default function VehicleRegistrationPage() {
         </div>
       </section>
 
-      <section id="registration-form" className="mx-auto max-w-7xl px-4 pt-16 pb-24 sm:px-6 lg:px-8 lg:pt-24 lg:pb-32">
+      <section id="registration-form" className="mx-auto max-w-7xl scroll-mt-32 px-4 pt-16 pb-24 sm:px-6 lg:px-8 lg:pt-24 lg:pb-32">
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="space-y-4">
             <Card className="rounded-[1.75rem] border-border">

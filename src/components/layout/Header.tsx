@@ -19,7 +19,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDownIcon } from "lucide-react";
 import {
   Car,
   Files,
@@ -32,9 +31,8 @@ import {
   CalendarCheck,
   Certificate,
   Wrench,
-  FolderOpen,
-  ClipboardText,
   SquaresFour,
+  CaretDown,
 } from "@phosphor-icons/react";
 
 const NAV_ITEMS = [
@@ -51,7 +49,6 @@ const PRIMARY_NAV_ITEMS_AFTER = NAV_ITEMS.filter(
   (item) => item.href !== "/" && item.href !== "/services" && item.href !== "/about"
 );
 const SERVICES_NAV_ITEM = NAV_ITEMS.find((item) => item.href === "/services")!;
-const ABOUT_NAV_ITEM = NAV_ITEMS.find((item) => item.href === "/about")!;
 
 export function Header() {
   const { language } = useSettingsStore();
@@ -76,7 +73,7 @@ export function Header() {
               <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-white/58">
                 {language === "en" ? "Metropolitan Manila" : "Kalakhang Maynila"}
               </p>
-              <p className="mt-1 text-sm font-semibold tracking-[-0.02em] text-white">
+              <p className="mt-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-white/88">
                 {language === "en"
                   ? "Development Authority"
                   : "Development Authority"}
@@ -121,7 +118,7 @@ export function Header() {
                   aria-haspopup="menu"
                 >
                   {servicesLabel}
-                  <ChevronDownIcon className="ml-1 size-4 opacity-80" />
+                  <CaretDown className="ml-1 size-4 opacity-80" weight="bold" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="center" className="w-64 p-2">
@@ -231,7 +228,7 @@ export function Header() {
                   aria-haspopup="menu"
                 >
                   {t("nav.about", language)}
-                  <ChevronDownIcon className="ml-1 size-4 opacity-80" />
+                  <CaretDown className="ml-1 size-4 opacity-80" weight="bold" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="center" className="w-64 p-2">

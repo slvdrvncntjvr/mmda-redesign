@@ -108,6 +108,12 @@ const codingMap: Record<number, number[]> = {
   5: [9, 0],
 };
 
+const tabHashMap: Record<string, string> = {
+  traffic: "",
+  coding: "number-coding",
+  flood: "flood-advisory",
+};
+
 const codingHolidays: string[] = [
   "01-01", // New Year's Day
   "02-25", // EDSA People Power Anniversary
@@ -207,6 +213,15 @@ export default function TrafficPage() {
     setCodingResult(getNumberCodingResult(plateNumber, language));
   }
 
+  function handleTabChange(value: string) {
+    setActiveTab(value);
+    const hash = tabHashMap[value];
+    const nextUrl = hash
+      ? `${window.location.pathname}${window.location.search}#${hash}`
+      : `${window.location.pathname}${window.location.search}`;
+    window.history.replaceState(null, "", nextUrl);
+  }
+
   const dayNames =
     language === "en"
       ? ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
@@ -258,7 +273,7 @@ export default function TrafficPage() {
 
       {/* Tabbed dashboard */}
       <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8 lg:pb-32">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="gap-0">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="gap-0">
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-[clamp(2.1rem,3.8vw,3.6rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-foreground">
               {language === "en" ? "Roads dashboard" : "Dashboard ng kalsada"}
@@ -376,7 +391,7 @@ export default function TrafficPage() {
           </TabsContent>
 
           {/* ── Number coding tab ── */}
-          <TabsContent value="coding" id="number-coding">
+          <TabsContent value="coding" id="number-coding" className="scroll-mt-32">
             <div className="rounded-[2.2rem] border border-primary/20 bg-primary/[0.03] p-3 shadow-[0_0_40px_-12px] shadow-primary/10 dark:border-primary/15 dark:bg-primary/[0.02] md:p-4">
               <Card className="rounded-[1.9rem] border-border">
                 <CardContent className="p-6 md:p-8">
@@ -453,7 +468,7 @@ export default function TrafficPage() {
           </TabsContent>
 
           {/* ── Flood advisory tab ── */}
-          <TabsContent value="flood" id="flood-advisory">
+          <TabsContent value="flood" id="flood-advisory" className="scroll-mt-32">
             <div className="mb-4">
               <p className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-2 text-xs text-muted-foreground">
                 <Drop className="size-3.5" weight="bold" />

@@ -167,7 +167,7 @@ export default function ContactPage() {
             </Card>
           </div>
 
-          <Card id="contact-form" className="rounded-[1.75rem] border-border">
+          <Card id="contact-form" className="scroll-mt-32 rounded-[1.75rem] border-border">
             <CardContent className="p-6 md:p-8">
               {submitted ? (
                 <div className="py-14 text-center">
@@ -208,9 +208,10 @@ export default function ContactPage() {
                         className="mt-1.5"
                         {...register("name", { required: true, minLength: 2 })}
                         aria-invalid={!!errors.name}
+                        aria-describedby={errors.name ? "contact-name-error" : undefined}
                       />
                       {errors.name && (
-                        <p className="mt-1 text-xs text-destructive">
+                        <p id="contact-name-error" className="mt-1 text-xs text-destructive">
                           {language === "en" ? "Name is required (at least 2 characters)." : "Kinakailangan ang pangalan (hindi bababa sa 2 karakter)."}
                         </p>
                       )}
@@ -228,9 +229,10 @@ export default function ContactPage() {
                         className="mt-1.5"
                         {...register("email", { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ })}
                         aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? "contact-email-error" : undefined}
                       />
                       {errors.email && (
-                        <p className="mt-1 text-xs text-destructive">
+                        <p id="contact-email-error" className="mt-1 text-xs text-destructive">
                           {language === "en" ? "Please enter a valid email address." : "Mangyaring maglagay ng wastong email address."}
                         </p>
                       )}
@@ -247,9 +249,10 @@ export default function ContactPage() {
                         className="mt-1.5"
                         {...register("subject", { required: true, minLength: 3 })}
                         aria-invalid={!!errors.subject}
+                        aria-describedby={errors.subject ? "contact-subject-error" : undefined}
                       />
                       {errors.subject && (
-                        <p className="mt-1 text-xs text-destructive">
+                        <p id="contact-subject-error" className="mt-1 text-xs text-destructive">
                           {language === "en" ? "Subject is required (at least 3 characters)." : "Kinakailangan ang paksa (hindi bababa sa 3 karakter)."}
                         </p>
                       )}
@@ -266,9 +269,10 @@ export default function ContactPage() {
                         placeholder={language === "en" ? "Type your message here..." : "I-type ang iyong mensahe dito..."}
                         {...register("message", { required: true, minLength: 10 })}
                         aria-invalid={!!errors.message}
+                        aria-describedby={errors.message ? "contact-message-error" : undefined}
                       />
                       {errors.message && (
-                        <p className="mt-1 text-xs text-destructive">
+                        <p id="contact-message-error" className="mt-1 text-xs text-destructive">
                           {language === "en" ? "Message must be at least 10 characters." : "Ang mensahe ay dapat hindi bababa sa 10 karakter."}
                         </p>
                       )}

@@ -160,7 +160,7 @@ export default function ReportConcernPage() {
         </div>
       </section>
 
-      <section id="report-form" className="mx-auto max-w-7xl px-4 pt-16 pb-12 sm:px-6 lg:px-8 lg:pt-24">
+      <section id="report-form" className="mx-auto max-w-7xl scroll-mt-32 px-4 pt-16 pb-12 sm:px-6 lg:px-8 lg:pt-24">
         <div className="hidden h-90 overflow-hidden rounded-[2rem] border border-border lg:flex">
           {responseSteps.map((step, index) => {
             const stepImage = stepsImages[index % stepsImages.length];
@@ -290,9 +290,10 @@ export default function ReportConcernPage() {
                     className="mt-1.5"
                     {...register("name", { required: true, minLength: 2 })}
                     aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? "report-name-error" : undefined}
                   />
                   {errors.name && (
-                    <p className="mt-1 text-xs text-destructive">
+                    <p id="report-name-error" className="mt-1 text-xs text-destructive">
                       {language === "en" ? "Name must be at least 2 characters." : "Ang pangalan ay dapat hindi bababa sa 2 karakter."}
                     </p>
                   )}
@@ -310,9 +311,10 @@ export default function ReportConcernPage() {
                     className="mt-1.5"
                     {...register("email", { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ })}
                     aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? "report-email-error" : undefined}
                   />
                   {errors.email && (
-                    <p className="mt-1 text-xs text-destructive">
+                    <p id="report-email-error" className="mt-1 text-xs text-destructive">
                       {language === "en" ? "Please enter a valid email address." : "Mangyaring maglagay ng wastong email address."}
                     </p>
                   )}
@@ -330,9 +332,10 @@ export default function ReportConcernPage() {
                     className="mt-1.5"
                     {...register("phone", { required: true, minLength: 7 })}
                     aria-invalid={!!errors.phone}
+                    aria-describedby={errors.phone ? "report-phone-error" : undefined}
                   />
                   {errors.phone && (
-                    <p className="mt-1 text-xs text-destructive">
+                    <p id="report-phone-error" className="mt-1 text-xs text-destructive">
                       {language === "en" ? "Please enter a valid phone number." : "Mangyaring maglagay ng wastong numero ng telepono."}
                     </p>
                   )}
@@ -347,6 +350,7 @@ export default function ReportConcernPage() {
                     className="mt-1.5 flex h-11 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     {...register("concernType", { required: true })}
                     aria-invalid={!!errors.concernType}
+                    aria-describedby={errors.concernType ? "report-concern-type-error" : undefined}
                   >
                     <option value="">
                       {language === "en" ? "Select a concern type..." : "Pumili ng uri ng problema..."}
@@ -358,7 +362,7 @@ export default function ReportConcernPage() {
                     ))}
                   </select>
                   {errors.concernType && (
-                    <p className="mt-1 text-xs text-destructive">
+                    <p id="report-concern-type-error" className="mt-1 text-xs text-destructive">
                       {language === "en" ? "Please select a concern type." : "Mangyaring pumili ng uri ng problema."}
                     </p>
                   )}
@@ -376,9 +380,10 @@ export default function ReportConcernPage() {
                     className="mt-1.5"
                     {...register("location", { required: true, minLength: 5 })}
                     aria-invalid={!!errors.location}
+                    aria-describedby={errors.location ? "report-location-error" : undefined}
                   />
                   {errors.location && (
-                    <p className="mt-1 text-xs text-destructive">
+                    <p id="report-location-error" className="mt-1 text-xs text-destructive">
                       {language === "en"
                         ? "Please provide a specific location (at least 5 characters)."
                         : "Mangyaring magbigay ng tiyak na lokasyon (hindi bababa sa 5 karakter)."}
@@ -397,9 +402,10 @@ export default function ReportConcernPage() {
                     placeholder={language === "en" ? "Provide details about the concern..." : "Magbigay ng detalye tungkol sa problema..."}
                     {...register("description", { required: true, minLength: 20 })}
                     aria-invalid={!!errors.description}
+                    aria-describedby={errors.description ? "report-description-error" : undefined}
                   />
                   {errors.description && (
-                    <p className="mt-1 text-xs text-destructive">
+                    <p id="report-description-error" className="mt-1 text-xs text-destructive">
                       {language === "en" ? "Description must be at least 20 characters." : "Ang deskripsyon ay dapat hindi bababa sa 20 karakter."}
                     </p>
                   )}

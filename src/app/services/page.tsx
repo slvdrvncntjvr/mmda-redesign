@@ -29,15 +29,6 @@ const tabLabels = {
   },
 } as const;
 
-const serviceStreams = [
-  { en: "Licensing guidance", fil: "Gabay sa lisensya" },
-  { en: "Violation payments", fil: "Pagbayad ng multa" },
-  { en: "Citizen assistance", fil: "Tulong sa mamamayan" },
-  { en: "Permit processing", fil: "Pagproseso ng permit" },
-  { en: "Roadside support", fil: "Suporta sa kalsada" },
-  { en: "Operational reports", fil: "Mga ulat sa operasyon" },
-];
-
 const categoryLabels: Record<ServiceItem["category"], { en: string; fil: string }> = {
   licensing: { en: "Licensing", fil: "Paglilisensya" },
   violations: { en: "Violations", fil: "Mga Paglabag" },
@@ -133,22 +124,6 @@ export default function ServicesPage() {
                 {language === "en" ? "Open traffic tools" : "Buksan ang traffic tools"}
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-y border-border/70 bg-[#08162f] py-6 text-white">
-        <div className="marquee-track">
-          <div className="marquee-row">
-            {[...serviceStreams, ...serviceStreams].map((item, index) => (
-              <span
-                key={`${item.en}-${index}`}
-                className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/72"
-              >
-                <span className="size-1.5 rounded-full bg-white/45" />
-                {language === "en" ? item.en : item.fil}
-              </span>
-            ))}
           </div>
         </div>
       </section>

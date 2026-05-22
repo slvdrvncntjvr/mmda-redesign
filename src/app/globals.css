@@ -182,16 +182,6 @@
   .shadow-brand-lg {
     box-shadow: 0 4px 16px -4px oklch(0.44 0.16 255 / 0.08);
   }
-  .marquee-track {
-    overflow: hidden;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  }
-  .marquee-row {
-    display: flex;
-    width: max-content;
-    gap: 1rem;
-    animation: marquee 28s linear infinite;
-  }
 }
 
 .high-contrast {
@@ -225,11 +215,8 @@
   z-index: 0 !important;
 }
 
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
+@media (max-width: 767px) {
+  body {
+    background-attachment: scroll;
   }
 }

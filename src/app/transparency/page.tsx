@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Buildings, ClipboardText, Files } from "@phosphor-icons/react";
 import { useSettingsStore } from "@/stores/useSettingsStore";
@@ -12,6 +12,11 @@ const tabs: { id: TabId; icon: typeof Buildings; label: { en: string; fil: strin
   { id: "citizen-charter", icon: ClipboardText, label: { en: "Citizen Charter", fil: "Citizen Charter" } },
   { id: "plans-and-reports", icon: Files, label: { en: "Plans and Reports", fil: "Mga Plano at Ulat" } },
 ];
+
+function getTabFromHash(hash: string): TabId | null {
+  const value = hash.replace("#", "");
+  return tabs.some((tab) => tab.id === value) ? (value as TabId) : null;
+}
 
 
 const organizationalHighlights = [
@@ -62,6 +67,22 @@ export default function TransparencyOverviewPage() {
   const { language } = useSettingsStore();
   const [activeTab, setActiveTab] = useState<TabId>("organizational-profile");
 
+  useEffect(() => {
+    function syncTabFromHash() {
+      const hashTab = getTabFromHash(window.location.hash);
+      if (hashTab) setActiveTab(hashTab);
+    }
+
+    syncTabFromHash();
+    window.addEventListener("hashchange", syncTabFromHash);
+    return () => window.removeEventListener("hashchange", syncTabFromHash);
+  }, []);
+
+  function handleTabChange(tabId: TabId) {
+    setActiveTab(tabId);
+    window.history.replaceState(null, "", `#${tabId}`);
+  }
+
   return (
     <section className="w-full max-w-full overflow-x-hidden">
       <section className="relative isolate overflow-hidden px-4 pb-20 pt-16 sm:px-6 lg:px-8 lg:pb-28">
@@ -84,7 +105,7 @@ export default function TransparencyOverviewPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap gap-2 rounded-[1.25rem] border border-border bg-card p-3">
+        <div className="flex flex-wrap gap-2 rounded-[1.25rem] border border-border bg-card p-3" role="tablist" aria-label={language === "en" ? "Transparency sections" : "Mga seksyon ng transparency"}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const active = activeTab === tab.id;
@@ -92,7 +113,11 @@ export default function TransparencyOverviewPage() {
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => setActiveTab(tab.id)}
+                role="tab"
+                id={`${tab.id}-tab`}
+                aria-selected={active}
+                aria-controls={`${tab.id}-panel`}
+                onClick={() => handleTabChange(tab.id)}
                 className={active
                   ? "inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
                   : "inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground"
@@ -108,7 +133,7 @@ export default function TransparencyOverviewPage() {
 
       <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8 lg:pb-32">
         {activeTab === "organizational-profile" && (
-          <article className="space-y-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] md:p-9">
+          <article id="organizational-profile-panel" role="tabpanel" aria-labelledby="organizational-profile-tab" className="space-y-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] md:p-9">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
               <Buildings className="size-4" weight="bold" />
               {language === "en" ? "Organizational profile" : "Organisasyonal na profile"}
@@ -146,7 +171,7 @@ export default function TransparencyOverviewPage() {
         )}
 
         {activeTab === "citizen-charter" && (
-          <article className="space-y-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] md:p-9">
+          <article id="citizen-charter-panel" role="tabpanel" aria-labelledby="citizen-charter-tab" className="space-y-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] md:p-9">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
               <ClipboardText className="size-4" weight="bold" />
               {language === "en" ? "Citizen charter" : "Citizen charter"}
@@ -188,7 +213,7 @@ export default function TransparencyOverviewPage() {
         )}
 
         {activeTab === "plans-and-reports" && (
-          <article className="space-y-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] md:p-9">
+          <article id="plans-and-reports-panel" role="tabpanel" aria-labelledby="plans-and-reports-tab" className="space-y-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] md:p-9">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
               <Files className="size-4" weight="bold" />
               {language === "en" ? "Plans and reports" : "Mga plano at ulat"}
