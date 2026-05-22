@@ -21,17 +21,6 @@ import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const marqueeItems = [
-  { en: "Traffic flow", fil: "Daloy ng trapiko" },
-  { en: "Flood advisories", fil: "Mga abiso sa baha" },
-  { en: "Citizen services", fil: "Serbisyo sa mamamayan" },
-  { en: "Incident reporting", fil: "Pag-uulat ng insidente" },
-  { en: "Road safety", fil: "Kaligtasan sa kalsada" },
-  { en: "Metrobase 136", fil: "Metrobase 136" },
-  { en: "Permit guidance", fil: "Gabay sa permit" },
-  { en: "Public notices", fil: "Mga pampublikong abiso" },
-];
-
 const journeyCards = [
   {
     href: "/traffic",
@@ -417,22 +406,6 @@ export function HomePageExperience() {
                 </Link>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-y border-border/70 bg-[#08162f] py-6 text-white">
-        <div className="marquee-track">
-          <div className="marquee-row">
-            {[...marqueeItems, ...marqueeItems].map((item, index) => (
-              <span
-                key={`${item.en}-${index}`}
-                className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/72"
-              >
-                <span className="size-1.5 rounded-full bg-white/45" />
-                {language === "en" ? item.en : item.fil}
-              </span>
-            ))}
           </div>
         </div>
       </section>

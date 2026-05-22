@@ -182,25 +182,6 @@
   .shadow-brand-lg {
     box-shadow: 0 4px 16px -4px oklch(0.44 0.16 255 / 0.08);
   }
-  .marquee-track {
-    overflow: hidden;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  }
-  .marquee-row {
-    display: flex;
-    min-width: max-content;
-    width: max-content;
-    flex-shrink: 0;
-    gap: 1rem;
-    will-change: transform;
-    animation-name: marquee;
-    animation-duration: 18s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  }
-  .marquee-track:hover .marquee-row {
-    animation-play-state: paused;
-  }
 }
 
 .high-contrast {
@@ -232,15 +213,6 @@
 /* Contain Leaflet z-index within map wrappers so it doesn't overlap the navbar */
 .leaflet-container {
   z-index: 0 !important;
-}
-
-@keyframes marquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
 }
 
 @media (max-width: 767px) {
