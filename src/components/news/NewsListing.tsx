@@ -98,22 +98,7 @@ export function NewsListing({ initialCategory }: { initialCategory?: string }) {
                 : "Gamitin ang filter sa ibaba para mabilis lumipat sa advisories, public notice, at press communication."}
             </p>
 
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href="/traffic"
-                className="inline-flex min-w-55 items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-semibold text-slate-950 transition-transform hover:-translate-y-0.5 hover:bg-white/92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                {language === "en" ? "Open traffic tools" : "Buksan ang traffic tools"}
-                <ArrowRight className="size-4" weight="bold" />
-              </Link>
-              <Link
-                href="/services/report-concern"
-                className="inline-flex min-w-55 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-white/16 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                {language === "en" ? "Report a concern" : "Mag-ulat ng problema"}
-                <ArrowRight className="size-4" weight="bold" />
-              </Link>
-            </div>
+
           </div>
         </div>
       </section>

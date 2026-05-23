@@ -113,7 +113,7 @@ export default function TrafficViolationsPage() {
 
   if (showResults) {
     return (
-      <main className="overflow-x-hidden w-full max-w-full">
+      <div className="overflow-x-hidden w-full max-w-full">
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <Button
             variant="ghost"
@@ -315,12 +315,12 @@ export default function TrafficViolationsPage() {
             </DialogContent>
           </Dialog>
         </section>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="overflow-x-hidden w-full max-w-full">
+    <div className="overflow-x-hidden w-full max-w-full">
       <section className="relative isolate overflow-hidden px-4 pb-24 pt-16 sm:px-6 lg:px-8 lg:pb-32">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-22 mix-blend-luminosity"
@@ -504,6 +504,6 @@ export default function TrafficViolationsPage() {
           </Card>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

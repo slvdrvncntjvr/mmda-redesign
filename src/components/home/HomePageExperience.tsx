@@ -35,7 +35,7 @@ const journeyCards = [
       en: "Check the live traffic map, review route conditions, and confirm the latest number-coding guidance in one flow.",
       fil: "Suriin ang live traffic map, kondisyon ng mga ruta, at pinakabagong gabay sa number coding sa iisang daloy.",
     },
-    action: { en: "Open traffic tools", fil: "Buksan ang traffic tools" },
+    action: { en: "View traffic map", fil: "Tingnan ang traffic map" },
   },
   {
     href: "/services/report-concern",
@@ -88,8 +88,7 @@ export function HomePageExperience() {
   const featuredNews = mockNews[0];
   const featuredServices = mockServices.slice(0, 4);
   const trafficHighlights = mockTrafficRoutes.slice(0, 3);
-  const activeAdvisoryIcon = mockAdvisory.type === "weather" ? CloudRain : Warning;
-  const ActiveAdvisoryIcon = activeAdvisoryIcon;
+  const ActiveAdvisoryIcon = mockAdvisory.type === "weather" ? CloudRain : Warning;
 
   const revealSentence =
     language === "en"
@@ -214,7 +213,7 @@ export function HomePageExperience() {
                   href="/services"
                   className="inline-flex min-w-[220px] items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-semibold text-slate-950 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-white/92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 >
-                  {language === "en" ? "Explore services" : "Tingnan ang mga serbisyo"}
+                  {language === "en" ? "Browse services" : "Tingnan ang mga serbisyo"}
                   <ArrowRight className="size-4" weight="bold" />
                 </Link>
                 <Link
@@ -294,7 +293,7 @@ export function HomePageExperience() {
                   href="/services"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  {language === "en" ? "Open full service directory" : "Buksan ang buong service directory"}
+                  {language === "en" ? "Browse services" : "Tingnan ang mga serbisyo"}
                   <ArrowRight className="size-4" weight="bold" />
                 </Link>
               </div>
@@ -374,7 +373,7 @@ export function HomePageExperience() {
                 href="/traffic"
                 className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                {language === "en" ? "Go to traffic view" : "Pumunta sa traffic view"}
+                {language === "en" ? "View traffic map" : "Tingnan ang traffic map"}
                 <ArrowRight className="size-4" weight="bold" />
               </Link>
             </div>
@@ -480,74 +479,7 @@ export function HomePageExperience() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8 lg:pb-24">
-        <div className="overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#06142d] text-white shadow-[0_30px_100px_-50px_rgba(7,20,40,1)]">
-          <div className="grid gap-12 px-6 py-8 md:px-10 md:py-12 lg:grid-cols-[1fr_1fr] lg:px-14 lg:py-16">
-            <div>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/56">
-                  {language === "en" ? "Operational commitments" : "Mga pangako sa operasyon"}
-                </p>
-                <h2 className="mt-5 max-w-xl text-[clamp(2.25rem,3.8vw,3.75rem)] font-semibold leading-[0.98] tracking-[-0.04em]">
-                  {language === "en"
-                    ? "24/7 public service through verified reporting channels."
-                    : "24/7 serbisyo publiko sa pamamagitan ng mga verified reporting channel."}
-                </h2>
-                <p className="mt-5 max-w-xl text-sm leading-7 text-white/68 md:text-base">
-                  {language === "en"
-                    ? "Report road incidents, flooding, or hazards directly to MMDA operations. Call hotline 136 for immediate assistance or submit a report online for follow-up."
-                    : "Mag-ulat ng insidente sa kalsada, baha, o panganib nang direkta sa MMDA operations. Tumawag sa hotline 136 para sa agarang tulong o magsumite ng ulat online para sa follow-up."}
-                </p>
-              </div>
-            </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-[1.6rem] border border-white/10 bg-white/8 p-5 backdrop-blur">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/58">
-                  {language === "en" ? "Critical hotline" : "Mahalagang hotline"}
-                </p>
-                <p className="mt-3 text-3xl font-semibold leading-none text-white">136</p>
-                <p className="mt-3 text-sm leading-7 text-white/68">
-                  {language === "en"
-                    ? "Metrobase support for incidents, hazards, and emergency roadside response."
-                    : "Metrobase support para sa insidente, panganib, at emergency roadside response."}
-                </p>
-              </div>
-              <div className="rounded-[1.6rem] border border-white/10 bg-white/8 p-5 backdrop-blur">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/58">
-                  {language === "en" ? "Service review window" : "Panahon ng pagsusuri ng serbisyo"}
-                </p>
-                <p className="mt-3 text-2xl font-semibold leading-none text-white">
-                  {language === "en"
-                    ? "Initial review in 24 to 48 hours"
-                    : "Unang review sa loob ng 24 hanggang 48 oras"}
-                </p>
-                <p className="mt-3 text-sm leading-7 text-white/68">
-                  {language === "en"
-                    ? "Reports are queued by severity and location to help operations teams prioritize field action."
-                    : "Inaayos ang report ayon sa severity at lokasyon upang mauna ang mahalagang field action."}
-                </p>
-              </div>
-
-              <Link
-                href="/services/report-concern"
-                className="inline-flex items-center justify-between rounded-[1.6rem] border border-white/10 bg-white px-5 py-4 text-sm font-semibold text-slate-950 transition-colors hover:bg-white/92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                {language === "en" ? "Submit an operational report" : "Magsumite ng operational report"}
-                <ArrowRight className="size-4" weight="bold" />
-              </Link>
-
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-between rounded-[1.6rem] border border-white/10 bg-white/8 px-5 py-4 text-sm font-semibold text-white transition-colors hover:bg-white/12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                {language === "en" ? "Open contact channels" : "Buksan ang contact channels"}
-                <Phone className="size-4" weight="bold" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
     </div>
   );

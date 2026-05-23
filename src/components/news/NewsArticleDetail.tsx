@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowLeft,
-  ArrowRight,
   CalendarBlank,
   Check,
   FacebookLogo,
@@ -153,32 +152,6 @@ export function NewsArticleDetail({ article }: { article: NewsArticle }) {
           </article>
 
           <aside className="space-y-4">
-            <div className="rounded-[1.7rem] border border-border bg-card p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                {language === "en" ? "Need a service next?" : "Kailangan ng serbisyo?"}
-              </p>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                {language === "en"
-                  ? "After reading advisories, proceed directly to service requests, report channels, or live traffic tools."
-                  : "Pagkatapos basahin ang advisory, dumiretso sa service request, report channel, o live traffic tools."}
-              </p>
-              <div className="mt-5 space-y-2">
-                <Link
-                  href="/services"
-                  className="inline-flex w-full items-center justify-between rounded-full border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  {language === "en" ? "Open services" : "Buksan ang services"}
-                  <ArrowRight className="size-4" weight="bold" />
-                </Link>
-                <Link
-                  href="/traffic"
-                  className="inline-flex w-full items-center justify-between rounded-full border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  {language === "en" ? "View traffic tools" : "Tingnan ang traffic tools"}
-                  <ArrowRight className="size-4" weight="bold" />
-                </Link>
-              </div>
-            </div>
 
             <Link
               href="/news"

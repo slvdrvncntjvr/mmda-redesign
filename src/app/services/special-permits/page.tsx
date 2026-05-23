@@ -49,7 +49,7 @@ export default function SpecialPermitsPage() {
 
   if (submitted) {
     return (
-      <main className="overflow-x-hidden w-full max-w-full px-4 py-20 sm:px-6 lg:px-8">
+      <div className="overflow-x-hidden w-full max-w-full px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl rounded-[2rem] border border-border bg-card p-10 text-center shadow-brand-lg">
           <CheckCircle className="mx-auto size-16 text-emerald-500" weight="bold" />
           <h1 className="mt-6 text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-tight tracking-[-0.03em]">
@@ -73,12 +73,12 @@ export default function SpecialPermitsPage() {
             </Button>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="overflow-x-hidden w-full max-w-full">
+    <div className="overflow-x-hidden w-full max-w-full">
       {/* Hero */}
       <section className="relative isolate overflow-hidden px-4 pb-24 pt-16 sm:px-6 lg:px-8 lg:pb-32">
         <div
@@ -370,6 +370,6 @@ export default function SpecialPermitsPage() {
           </Card>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
