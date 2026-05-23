@@ -40,6 +40,7 @@ export default function ContactPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<ContactFormData>({ mode: "onBlur" });
 
   function onSubmit(data: ContactFormData) {
@@ -180,7 +181,7 @@ export default function ContactPage() {
                       ? "Thank you for contacting MMDA. Your message is queued for response."
                       : "Salamat sa pakikipag-ugnayan sa MMDA. Naka-queue na ang mensahe mo para sa tugon."}
                   </p>
-                  <Button className="mt-6 rounded-full px-6" onClick={() => setSubmitted(false)}>
+                  <Button className="mt-6 rounded-full px-6" onClick={() => { setSubmitted(false); reset(); }}>
                     {language === "en" ? "Send another message" : "Magpadala ng isa pang mensahe"}
                   </Button>
                 </div>

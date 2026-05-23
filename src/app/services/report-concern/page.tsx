@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ArrowRight, CheckCircle, ClipboardText, Phone, ShieldCheck, Warning } from "@phosphor-icons/react";
+import { CheckCircle, ClipboardText, Phone, ShieldCheck } from "@phosphor-icons/react";
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -69,6 +69,7 @@ export default function ReportConcernPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<ReportFormData>({ mode: "onBlur" });
 
   function onSubmit(data: ReportFormData) {
@@ -81,7 +82,7 @@ export default function ReportConcernPage() {
 
   if (submitted) {
     return (
-      <main className="overflow-x-hidden w-full max-w-full px-4 py-20 sm:px-6 lg:px-8">
+      <div className="overflow-x-hidden w-full max-w-full px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl rounded-[2rem] border border-border bg-card p-10 text-center shadow-brand-lg">
           <CheckCircle className="mx-auto size-16 text-emerald-500" weight="bold" />
           <h1 className="mt-6 text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-tight tracking-[-0.03em]">
@@ -93,7 +94,7 @@ export default function ReportConcernPage() {
               : "Naka-queue na ang concern mo para sa MMDA operations review. Para sa agarang incident na kailangang i-escalate kaagad, tumawag sa Metrobase 136."}
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button onClick={() => setSubmitted(false)} className="rounded-full px-6">
+            <Button onClick={() => { setSubmitted(false); reset(); }} className="rounded-full px-6">
               {language === "en" ? "Submit another report" : "Magsumite ng isa pang ulat"}
             </Button>
             <Button variant="outline" asChild className="rounded-full px-6">
@@ -104,12 +105,12 @@ export default function ReportConcernPage() {
             </Button>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="overflow-x-hidden w-full max-w-full">
+    <div className="overflow-x-hidden w-full max-w-full">
       <section className="relative isolate overflow-hidden px-4 pb-24 pt-16 sm:px-6 lg:px-8 lg:pb-32">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-22 mix-blend-luminosity"
@@ -148,13 +149,7 @@ export default function ReportConcernPage() {
                 <Phone className="size-4" weight="bold" />
                 {language === "en" ? "Call Metrobase 136" : "Tumawag sa Metrobase 136"}
               </a>
-              <Link
-                href="/services"
-                className="inline-flex min-w-55 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-white/16 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                {language === "en" ? "Back to services" : "Bumalik sa services"}
-                <ArrowRight className="size-4" weight="bold" />
-              </Link>
+
             </div>
           </div>
         </div>
@@ -244,26 +239,7 @@ export default function ReportConcernPage() {
               </CardContent>
             </Card>
 
-            <Card className="rounded-[1.75rem] border-border">
-              <CardContent className="p-6">
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
-                  <Warning className="size-4" weight="bold" />
-                  {language === "en" ? "Urgent escalation" : "Agarang escalation"}
-                </div>
-                <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                  {language === "en"
-                    ? "For active accidents, severe flooding, or immediate road hazards, call Metrobase 136 directly while also submitting this report."
-                    : "Para sa aktibong aksidente, matinding pagbaha, o agarang road hazard, tumawag agad sa Metrobase 136 habang nagsusumite ng report na ito."}
-                </p>
-                <a
-                  href="tel:136"
-                  className="mt-5 inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  <Phone className="size-4" weight="bold" />
-                  136
-                </a>
-              </CardContent>
-            </Card>
+
           </div>
 
           <Card className="rounded-[1.75rem] border-border">
@@ -449,6 +425,6 @@ export default function ReportConcernPage() {
           </Card>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

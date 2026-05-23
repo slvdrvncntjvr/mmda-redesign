@@ -2,7 +2,7 @@
 
 import { useRef, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, NavigationArrow, Phone, Warning } from "@phosphor-icons/react";
+import { ArrowRight, Phone } from "@phosphor-icons/react";
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import { mockServices, type ServiceItem } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
@@ -108,22 +108,7 @@ export default function ServicesPage() {
                 : "Hanapin ang mga requirements, magsumite ng aplikasyon, suriin ang status ng paglabag, at humiling ng tulong publiko sa MMDA."}
             </p>
 
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href="/services/report-concern"
-                className="inline-flex min-w-60 items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-semibold text-slate-950 transition-transform hover:-translate-y-0.5 hover:bg-white/92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                <Warning className="size-4" weight="bold" />
-                {language === "en" ? "Report a concern" : "Mag-ulat ng problema"}
-              </Link>
-              <Link
-                href="/traffic"
-                className="inline-flex min-w-60 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-white/16 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                <NavigationArrow className="size-4" weight="bold" />
-                {language === "en" ? "Open traffic tools" : "Buksan ang traffic tools"}
-              </Link>
-            </div>
+
           </div>
         </div>
       </section>

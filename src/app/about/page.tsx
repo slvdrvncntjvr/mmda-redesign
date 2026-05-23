@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import {
-  ArrowRight,
   Buildings,
   Drop,
   Eye,
@@ -126,22 +125,7 @@ export default function AboutPage() {
                 : "Bisyon, misyon, mandato, frontline offices, citizen charter commitments, at institutional milestones ng MMDA."}
             </p>
 
-            <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:mt-14 sm:flex-row">
-              <Link
-                href="/services"
-                className="inline-flex min-w-55 items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-semibold text-slate-950 transition-transform hover:-translate-y-0.5 hover:bg-white/92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                {language === "en" ? "View citizen services" : "Tingnan ang citizen services"}
-                <ArrowRight className="size-4" weight="bold" />
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex min-w-55 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-white/16 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                {language === "en" ? "Contact MMDA" : "Makipag-ugnayan sa MMDA"}
-                <ArrowRight className="size-4" weight="bold" />
-              </Link>
-            </div>
+
           </div>
         </div>
       </section>

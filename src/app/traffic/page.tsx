@@ -189,6 +189,7 @@ export default function TrafficPage() {
   const [plateNumber, setPlateNumber] = useState("");
   const [codingResult, setCodingResult] = useState<{ coded: boolean; message: string } | null>(null);
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
+  const [selectedFloodZone, setSelectedFloodZone] = useState<string | null>(null);
 
   useEffect(() => {
     function syncTabFromHash() {
@@ -258,15 +259,7 @@ export default function TrafficPage() {
                 : "Lumipat sa pagitan ng traffic flow, number coding, at flood advisories — lahat sa isang dashboard."}
             </p>
 
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href="/services/report-concern"
-                className="inline-flex min-w-[220px] items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-white/16 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                <Warning className="size-4" weight="bold" />
-                {language === "en" ? "Report a road concern" : "Mag-ulat ng road concern"}
-              </Link>
-            </div>
+
           </div>
         </div>
       </section>
@@ -405,7 +398,7 @@ export default function TrafficPage() {
                   </p>
 
                   <div className="max-w-xl">
-                    <div className="flex flex-col gap-3 sm:flex-row">
+                    <form onSubmit={(e) => { e.preventDefault(); handleCheckCoding(); }} className="flex flex-col gap-3 sm:flex-row">
                       <Input
                         type="text"
                         placeholder={language === "en" ? "e.g. ABC 1234" : "hal. ABC 1234"}
@@ -417,10 +410,10 @@ export default function TrafficPage() {
                         className="h-11"
                         aria-label={language === "en" ? "Plate number" : "Numero ng plaka"}
                       />
-                      <Button onClick={handleCheckCoding} disabled={!plateNumber.trim()} className="rounded-full px-6">
+                      <Button type="submit" disabled={!plateNumber.trim()} className="rounded-full px-6">
                         {language === "en" ? "Check" : "I-check"}
                       </Button>
-                    </div>
+                    </form>
 
                     {codingResult && (
                       <div
@@ -484,6 +477,7 @@ export default function TrafficPage() {
                   <CardContent className="p-0">
                     <FloodMap
                       zones={floodZones}
+                      selectedZoneId={selectedFloodZone}
                       className="h-[520px] w-full rounded-[1.9rem]"
                     />
                     <div className="flex flex-wrap items-center gap-4 px-5 py-3">
@@ -518,9 +512,15 @@ export default function TrafficPage() {
                     {floodZones.map((zone) => {
                       const cfg = floodLevelConfig[zone.level];
                       return (
-                        <div
+                        <button
                           key={zone.id}
-                          className="flex items-center gap-3 rounded-[1.1rem] border border-border/70 bg-background/70 px-3 py-3"
+                          onClick={() => setSelectedFloodZone(zone.id)}
+                          className={cn(
+                            "flex w-full items-center gap-3 rounded-[1.1rem] border px-3 py-3 text-left transition-colors hover:border-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                            selectedFloodZone === zone.id
+                              ? "border-primary/40 bg-primary/5"
+                              : "border-border/70 bg-background/70"
+                          )}
                         >
                           <Drop className="size-4 shrink-0 text-muted-foreground" weight="bold" />
                           <div className="min-w-0 flex-1">
@@ -532,7 +532,7 @@ export default function TrafficPage() {
                               </span>
                             </div>
                           </div>
-                        </div>
+                        </button>
                       );
                     })}
                   </CardContent>

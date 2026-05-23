@@ -18,7 +18,7 @@ const pages = [
   {
     title: "About MMDA",
     titleFil: "Tungkol sa MMDA",
-    href: "/transparency/about",
+    href: "/about",
     description: "Mandate, charter commitments, frontline offices, and history.",
     descriptionFil: "Mandato, charter commitments, frontline offices, at kasaysayan.",
   },
@@ -43,14 +43,16 @@ export default function SearchPage() {
       (s) =>
         s.title.toLowerCase().includes(q) ||
         s.titleFil.toLowerCase().includes(q) ||
-        s.description.toLowerCase().includes(q)
+        s.description.toLowerCase().includes(q) ||
+        s.descriptionFil.toLowerCase().includes(q)
     );
 
     const news = mockNews.filter(
       (n) =>
         n.title.toLowerCase().includes(q) ||
         n.titleFil.toLowerCase().includes(q) ||
-        n.excerpt.toLowerCase().includes(q)
+        n.excerpt.toLowerCase().includes(q) ||
+        n.excerptFil.toLowerCase().includes(q)
     );
 
     const pageResults = pages.filter(

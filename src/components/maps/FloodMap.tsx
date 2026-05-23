@@ -14,6 +14,7 @@ export interface FloodZone {
 
 interface FloodMapProps {
   zones: FloodZone[];
+  selectedZoneId?: string | null;
   className?: string;
 }
 
@@ -25,6 +26,7 @@ const levelConfig = {
 
 export function FloodMap({
   zones,
+  selectedZoneId,
   className = "h-[500px] w-full rounded-xl",
 }: FloodMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -67,6 +69,14 @@ export function FloodMap({
       mapInstanceRef.current = null;
     };
   }, [zones]);
+
+  useEffect(() => {
+    if (!selectedZoneId || !mapInstanceRef.current) return;
+    const zone = zones.find((z) => z.id === selectedZoneId);
+    if (zone) {
+      mapInstanceRef.current.flyTo(zone.center, 14, { duration: 0.8 });
+    }
+  }, [selectedZoneId, zones]);
 
   return <div ref={mapRef} className={className} />;
 }

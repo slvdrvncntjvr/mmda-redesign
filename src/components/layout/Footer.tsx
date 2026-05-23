@@ -2,69 +2,21 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import { t } from "@/lib/translations";
-import { ArrowRight, FacebookLogo, Phone, Warning, XLogo } from "@phosphor-icons/react";
+import { FacebookLogo, Phone, XLogo } from "@phosphor-icons/react";
 
 export function Footer() {
   const { language } = useSettingsStore();
-  const pathname = usePathname();
+
   const year = new Date().getFullYear();
 
-  function handleTopOfPageClick(event: React.MouseEvent<HTMLAnchorElement>, targetPath: string) {
-    const isSameRoute =
-      pathname === targetPath ||
-      pathname.startsWith(targetPath + "/") ||
-      (targetPath === "/services/report-concern" && pathname.startsWith("/services/report-concern"));
 
-    if (!isSameRoute) return;
-
-    event.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
 
   return (
     <footer className="mt-auto border-t border-white/10 bg-[#06142d] text-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="overflow-hidden rounded-[2.25rem] border border-white/10 bg-white/6 p-6 shadow-[0_24px_80px_-42px_rgba(7,20,40,1)] md:p-8 lg:p-10">
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/56">
-                {language === "en" ? "Need assistance?" : "Kailangan mo ba ng tulong?"}
-              </p>
-              <h2 className="mt-5 max-w-2xl text-[clamp(2rem,3.8vw,3.5rem)] font-semibold leading-[0.98] tracking-[-0.04em]">
-                {language === "en"
-                  ? "Need help right now, or need the next official update?"
-                  : "Kailangan mo ba ng tulong ngayon, o ng susunod na opisyal na update?"}
-              </h2>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-white/68 md:text-base">
-                {language === "en"
-                  ? "Use the faster reporting path for incidents, or go straight to the live traffic tools for road conditions and coding guidance."
-                  : "Gamitin ang mas mabilis na reporting path para sa mga insidente, o dumiretso sa live traffic tools para sa kondisyon ng kalsada at coding guidance."}
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
-              <Link
-                href="/services/report-concern"
-                onClick={(event) => handleTopOfPageClick(event, "/services/report-concern")}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 transition-transform hover:-translate-y-0.5 hover:bg-white/92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                <Warning className="size-4" weight="bold" />
-                {language === "en" ? "Report a concern" : "Mag-ulat ng problema"}
-              </Link>
-              <Link
-                href="/traffic"
-                onClick={(event) => handleTopOfPageClick(event, "/traffic")}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/12 bg-white/8 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/14 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                {language === "en" ? "Open traffic tools" : "Buksan ang traffic tools"}
-                <ArrowRight className="size-4" weight="bold" />
-              </Link>
-            </div>
-          </div>
-        </div>
 
         <div className="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.9fr_0.9fr_0.9fr]">
           <div>
