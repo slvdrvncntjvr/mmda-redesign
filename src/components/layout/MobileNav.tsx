@@ -27,12 +27,12 @@ interface MobileNavProps {
 export function MobileNav({ open, onOpenChange, items, pathname }: MobileNavProps) {
   const { language } = useSettingsStore();
   const [servicesOpen, setServicesOpen] = useState(pathname.startsWith("/services"));
+  const trafficItem = items.find((item) => item.href === "/traffic");
   const servicesItem = items.find((item) => item.href === "/services");
+  const newsItem = items.find((item) => item.href === "/news");
   const aboutItem = items.find((item) => item.href === "/about");
+  const contactItem = items.find((item) => item.href === "/contact");
   const homeItem = items.find((item) => item.href === "/");
-  const remainingItems = items.filter(
-    (item) => item.href !== "/services" && item.href !== "/about" && item.href !== "/"
-  );
   const servicesLabel = t("nav.services", language);
   const [aboutOpen, setAboutOpen] = useState(
     pathname.startsWith("/about") || pathname.startsWith("/transparency")
@@ -74,6 +74,23 @@ export function MobileNav({ open, onOpenChange, items, pathname }: MobileNavProp
               aria-current={pathname === "/" ? "page" : undefined}
             >
               {t(homeItem.key, language)}
+            </Link>
+          )}
+
+          {trafficItem && (
+            <Link
+              href={trafficItem.href}
+              onClick={() => onOpenChange(false)}
+              className={cn(
+                "rounded-[1.2rem] px-5 py-4 text-base font-medium transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                pathname === trafficItem.href || pathname.startsWith(trafficItem.href + "/")
+                  ? "bg-white text-slate-950"
+                  : "border border-white/10 bg-white/6 text-white/72 hover:bg-white/10 hover:text-white"
+              )}
+              aria-current={pathname === trafficItem.href || pathname.startsWith(trafficItem.href + "/") ? "page" : undefined}
+            >
+              {t(trafficItem.key, language)}
             </Link>
           )}
 
@@ -243,6 +260,23 @@ export function MobileNav({ open, onOpenChange, items, pathname }: MobileNavProp
             </Collapsible>
           )}
 
+          {newsItem && (
+            <Link
+              href={newsItem.href}
+              onClick={() => onOpenChange(false)}
+              className={cn(
+                "rounded-[1.2rem] px-5 py-4 text-base font-medium transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                pathname === newsItem.href || pathname.startsWith(newsItem.href + "/")
+                  ? "bg-white text-slate-950"
+                  : "border border-white/10 bg-white/6 text-white/72 hover:bg-white/10 hover:text-white"
+              )}
+              aria-current={pathname === newsItem.href || pathname.startsWith(newsItem.href + "/") ? "page" : undefined}
+            >
+              {t(newsItem.key, language)}
+            </Link>
+          )}
+
           {aboutItem && (
             <Collapsible open={aboutOpen} onOpenChange={setAboutOpen}>
               <CollapsibleTrigger asChild>
@@ -313,27 +347,22 @@ export function MobileNav({ open, onOpenChange, items, pathname }: MobileNavProp
             </Collapsible>
           )}
 
-          {remainingItems.map((item) => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => onOpenChange(false)}
-                className={cn(
-                  "rounded-[1.2rem] px-5 py-4 text-base font-medium transition-colors",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
-                  isActive
-                    ? "bg-white text-slate-950"
-                    : "border border-white/10 bg-white/6 text-white/72 hover:bg-white/10 hover:text-white"
-                )}
-                aria-current={isActive ? "page" : undefined}
-              >
-                {t(item.key, language)}
-              </Link>
-            );
-          })}
+          {contactItem && (
+            <Link
+              href={contactItem.href}
+              onClick={() => onOpenChange(false)}
+              className={cn(
+                "rounded-[1.2rem] px-5 py-4 text-base font-medium transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                pathname === contactItem.href || pathname.startsWith(contactItem.href + "/")
+                  ? "bg-white text-slate-950"
+                  : "border border-white/10 bg-white/6 text-white/72 hover:bg-white/10 hover:text-white"
+              )}
+              aria-current={pathname === contactItem.href || pathname.startsWith(contactItem.href + "/") ? "page" : undefined}
+            >
+              {t(contactItem.key, language)}
+            </Link>
+          )}
         </nav>
 
         {/* Metrobase 136 removed from mobile navigation per request */}

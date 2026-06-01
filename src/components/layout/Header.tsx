@@ -37,18 +37,19 @@ import {
 
 const NAV_ITEMS = [
   { key: "nav.home" as const, href: "/" },
-  { key: "nav.services" as const, href: "/services" },
   { key: "nav.traffic" as const, href: "/traffic" },
+  { key: "nav.services" as const, href: "/services" },
   { key: "nav.news" as const, href: "/news" },
   { key: "nav.about" as const, href: "/about" },
   { key: "nav.contact" as const, href: "/contact" },
 ] as const;
 
-const PRIMARY_NAV_ITEMS_BEFORE = NAV_ITEMS.filter((item) => item.href === "/");
-const PRIMARY_NAV_ITEMS_AFTER = NAV_ITEMS.filter(
-  (item) => item.href !== "/" && item.href !== "/services" && item.href !== "/about"
-);
+const HOME_NAV_ITEM = NAV_ITEMS.find((item) => item.href === "/")!;
+const TRAFFIC_NAV_ITEM = NAV_ITEMS.find((item) => item.href === "/traffic")!;
 const SERVICES_NAV_ITEM = NAV_ITEMS.find((item) => item.href === "/services")!;
+const NEWS_NAV_ITEM = NAV_ITEMS.find((item) => item.href === "/news")!;
+const ABOUT_NAV_ITEM = NAV_ITEMS.find((item) => item.href === "/about")!;
+const CONTACT_NAV_ITEM = NAV_ITEMS.find((item) => item.href === "/contact")!;
 
 export function Header() {
   const { language } = useSettingsStore();
@@ -85,7 +86,10 @@ export function Header() {
             className="hidden min-w-0 flex-1 flex-nowrap items-center justify-center gap-0.5 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden lg:flex"
             aria-label={t("a11y.mainNav", language)}
           >
-            {PRIMARY_NAV_ITEMS_BEFORE.map((item) => {
+            {[
+              HOME_NAV_ITEM,
+              TRAFFIC_NAV_ITEM,
+            ].map((item) => {
               const isActive = item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(item.href + "/");
 
               return (
@@ -215,6 +219,19 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
 
+            <Link
+              href={NEWS_NAV_ITEM.href}
+              className={cn(
+                "whitespace-nowrap rounded-full px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                pathname === NEWS_NAV_ITEM.href || pathname.startsWith(NEWS_NAV_ITEM.href + "/")
+                  ? "bg-white text-slate-950"
+                  : "text-white/72 hover:bg-white/10 hover:text-white"
+              )}
+              aria-current={pathname === NEWS_NAV_ITEM.href || pathname.startsWith(NEWS_NAV_ITEM.href + "/") ? "page" : undefined}
+            >
+              {t(NEWS_NAV_ITEM.key, language)}
+            </Link>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -247,25 +264,18 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {PRIMARY_NAV_ITEMS_AFTER.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "whitespace-nowrap rounded-full px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
-                    isActive
-                      ? "bg-white text-slate-950"
-                      : "text-white/72 hover:bg-white/10 hover:text-white"
-                  )}
-                  aria-current={isActive ? "page" : undefined}
-                >
-                  {t(item.key, language)}
-                </Link>
-              );
-            })}
+            <Link
+              href={CONTACT_NAV_ITEM.href}
+              className={cn(
+                "whitespace-nowrap rounded-full px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                pathname === CONTACT_NAV_ITEM.href || pathname.startsWith(CONTACT_NAV_ITEM.href + "/")
+                  ? "bg-white text-slate-950"
+                  : "text-white/72 hover:bg-white/10 hover:text-white"
+              )}
+              aria-current={pathname === CONTACT_NAV_ITEM.href || pathname.startsWith(CONTACT_NAV_ITEM.href + "/") ? "page" : undefined}
+            >
+              {t(CONTACT_NAV_ITEM.key, language)}
+            </Link>
           </nav>
 
           <div className="ml-auto hidden items-center gap-2 lg:flex lg:justify-self-end">
