@@ -423,9 +423,9 @@ export function HomePageExperience() {
                 ? "From checking traffic to reporting incidents — in just a few steps."
                 : "Mula sa pagsuri ng trapiko hanggang pag-uulat ng insidente — sa ilang hakbang lamang."}
             </h2>
-            <p ref={revealRef} className="mt-8 max-w-lg text-lg leading-8 text-muted-foreground">
+            <p ref={revealRef} className="mt-8 max-w-xl text-base leading-8 text-foreground/95 md:text-lg dark:text-white/95">
               {revealSentence.split(" ").map((word, index) => (
-                <span key={`${word}-${index}`} className="js-reveal-word mr-[0.35em] inline-block opacity-10">
+                <span key={`${word}-${index}`} className="js-reveal-word mr-[0.35em] inline-block opacity-45">
                   {word}
                 </span>
               ))}
