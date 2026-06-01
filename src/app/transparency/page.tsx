@@ -2,8 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Buildings, ClipboardText, Files } from "@phosphor-icons/react";
+import {
+  ArrowRight,
+  ArrowSquareOut,
+  Buildings,
+  ClipboardText,
+  DownloadSimple,
+  Files,
+  FolderOpen,
+  MagnifyingGlass,
+} from "@phosphor-icons/react";
 import { useSettingsStore } from "@/stores/useSettingsStore";
+import { transparencyCategories } from "@/lib/transparency-data";
 
 type TabId = "organizational-profile" | "citizen-charter" | "plans-and-reports";
 
@@ -17,7 +27,6 @@ function getTabFromHash(hash: string): TabId | null {
   const value = hash.replace("#", "");
   return tabs.some((tab) => tab.id === value) ? (value as TabId) : null;
 }
-
 
 const organizationalHighlights = [
   { title: { en: "Legal basis", fil: "Legal na batayan" }, description: { en: "Republic Act No. 7924 establishes MMDA as the agency responsible for metro-wide services and coordination in Metro Manila.", fil: "Itinatag ng Republic Act No. 7924 ang MMDA bilang ahensyang may pananagutan sa metro-wide services at koordinasyon sa Metro Manila." } },
@@ -51,28 +60,28 @@ const kpiCards = [
   { label: { en: "Cleared obstructions", fil: "Cleared obstructions" }, value: "1,240", note: { en: "clearing actions this quarter", fil: "clearing actions ngayong quarter" } },
 ] as const;
 
-const reports = [
-  { title: { en: "2026 Q1 Traffic Operations Performance Report", fil: "2026 Q1 Traffic Operations Performance Report" }, period: { en: "January to March 2026", fil: "Enero hanggang Marso 2026" }, owner: { en: "Traffic Discipline Office", fil: "Traffic Discipline Office" }, date: "Apr 15, 2026", status: { en: "Published", fil: "Published" }, file: "PDF, 2.4 MB", href: "/reports/transparency/2026-q1-traffic-operations-performance-report.pdf", downloadName: "2026-q1-traffic-operations-performance-report.pdf" },
-  { title: { en: "2026 Flood Mitigation Preparedness Brief", fil: "2026 Flood Mitigation Preparedness Brief" }, period: { en: "Pre-monsoon 2026", fil: "Pre-monsoon 2026" }, owner: { en: "Flood Control and Sewerage Management", fil: "Flood Control and Sewerage Management" }, date: "May 02, 2026", status: { en: "Published", fil: "Published" }, file: "PDF, 1.8 MB", href: "/reports/transparency/2026-flood-mitigation-preparedness-brief.pdf", downloadName: "2026-flood-mitigation-preparedness-brief.pdf" },
-  { title: { en: "2026 Mid-Year Budget Utilization Summary", fil: "2026 Mid-Year Budget Utilization Summary" }, period: { en: "January to June 2026", fil: "Enero hanggang Hunyo 2026" }, owner: { en: "Finance and Planning", fil: "Finance and Planning" }, date: "Jun 30, 2026", status: { en: "Published", fil: "Published" }, file: "PDF, 1.2 MB", href: "/reports/transparency/2026-mid-year-budget-utilization-summary.pdf", downloadName: "2026-mid-year-budget-utilization-summary.pdf" },
-] as const;
-
 const projectTracker = [
   { project: { en: "EDSA signal timing optimization", fil: "EDSA signal timing optimization" }, status: { en: "Ongoing", fil: "Ongoing" }, progress: 68 },
   { project: { en: "Flood pump station modernization phase 2", fil: "Flood pump station modernization phase 2" }, status: { en: "Ongoing", fil: "Ongoing" }, progress: 54 },
   { project: { en: "Incident reporting dashboard revamp", fil: "Incident reporting dashboard revamp" }, status: { en: "Completed", fil: "Completed" }, progress: 100 },
 ] as const;
 
+function isDownloadLink(url: string): boolean {
+  return /\.(pdf|xlsx?|docx?|zip|csv)$/i.test(url);
+}
+
 export default function TransparencyOverviewPage() {
   const { language } = useSettingsStore();
   const [activeTab, setActiveTab] = useState<TabId>("organizational-profile");
+  const [activeCategoryId, setActiveCategoryId] = useState<string>(transparencyCategories[0].id);
+  const [search, setSearch] = useState("");
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     function syncTabFromHash() {
       const hashTab = getTabFromHash(window.location.hash);
       if (hashTab) setActiveTab(hashTab);
     }
-
     syncTabFromHash();
     window.addEventListener("hashchange", syncTabFromHash);
     return () => window.removeEventListener("hashchange", syncTabFromHash);
@@ -81,10 +90,24 @@ export default function TransparencyOverviewPage() {
   function handleTabChange(tabId: TabId) {
     setActiveTab(tabId);
     window.history.replaceState(null, "", `#${tabId}`);
+    if (tabId === "plans-and-reports") {
+      setSearch("");
+      setMobileOpen(false);
+    }
   }
+
+  const activeCategory = transparencyCategories.find((c) => c.id === activeCategoryId) ?? transparencyCategories[0];
+
+  const filteredLinks = search.trim()
+    ? activeCategory.links.filter((l) =>
+        l.text.toLowerCase().includes(search.toLowerCase()) ||
+        l.url.toLowerCase().includes(search.toLowerCase())
+      )
+    : activeCategory.links;
 
   return (
     <section className="w-full max-w-full overflow-x-hidden">
+      {/* Hero */}
       <section className="relative isolate overflow-hidden px-4 pb-20 pt-16 sm:px-6 lg:px-8 lg:pb-28">
         <div className="absolute inset-0 bg-cover bg-center opacity-24 mix-blend-luminosity" style={{ backgroundImage: "url('/images/transparency/transparency.jpg')" }} />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(43,92,182,0.34),transparent_48%),linear-gradient(180deg,rgba(2,8,23,0.16),rgba(2,8,23,0.4))]" />
@@ -104,6 +127,7 @@ export default function TransparencyOverviewPage() {
         </div>
       </section>
 
+      {/* Tab bar */}
       <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
         <div className="flex flex-wrap gap-2 rounded-[1.25rem] border border-border bg-card p-3" role="tablist" aria-label={language === "en" ? "Transparency sections" : "Mga seksyon ng transparency"}>
           {tabs.map((tab) => {
@@ -131,7 +155,10 @@ export default function TransparencyOverviewPage() {
         </div>
       </section>
 
+      {/* Tab panels */}
       <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8 lg:pb-32">
+
+        {/* Organizational Profile */}
         {activeTab === "organizational-profile" && (
           <article id="organizational-profile-panel" role="tabpanel" aria-labelledby="organizational-profile-tab" className="space-y-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] md:p-9">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
@@ -170,6 +197,7 @@ export default function TransparencyOverviewPage() {
           </article>
         )}
 
+        {/* Citizen Charter */}
         {activeTab === "citizen-charter" && (
           <article id="citizen-charter-panel" role="tabpanel" aria-labelledby="citizen-charter-tab" className="space-y-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] md:p-9">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
@@ -212,53 +240,215 @@ export default function TransparencyOverviewPage() {
           </article>
         )}
 
+        {/* Plans and Reports */}
         {activeTab === "plans-and-reports" && (
-          <article id="plans-and-reports-panel" role="tabpanel" aria-labelledby="plans-and-reports-tab" className="space-y-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] md:p-9">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
-              <Files className="size-4" weight="bold" />
-              {language === "en" ? "Plans and reports" : "Mga plano at ulat"}
-            </div>
-            <p className="text-sm leading-7 text-muted-foreground md:text-base">
-              {language === "en" ? "This section publishes MMDA plans, targets, accomplishments, and budget-linked performance indicators." : "Inilalathala sa seksyong ito ang mga plano, target, accomplishment, at budget-linked performance indicators ng MMDA."}
-            </p>
+          <article id="plans-and-reports-panel" role="tabpanel" aria-labelledby="plans-and-reports-tab" className="space-y-6">
+            {/* KPI cards */}
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               {kpiCards.map((item) => (
-                <div key={item.label.en} className="rounded-[1.2rem] border border-border bg-background/70 p-5">
+                <div key={item.label.en} className="rounded-[1.2rem] border border-border bg-card p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">{language === "en" ? item.label.en : item.label.fil}</p>
                   <p className="mt-3 text-2xl font-semibold text-foreground">{item.value}</p>
                   <p className="mt-1 text-sm text-muted-foreground">{language === "en" ? item.note.en : item.note.fil}</p>
                 </div>
               ))}
             </div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">{language === "en" ? "Recent files" : "Mga kamakailang file"}</h3>
-            <div className="overflow-x-auto rounded-[1.2rem] border border-border">
-              <div className="min-w-245">
-                <div className="grid grid-cols-[minmax(0,2.6fr)_minmax(10rem,1.3fr)_minmax(11rem,1.5fr)_minmax(8rem,1fr)_minmax(7rem,0.9fr)_minmax(12rem,1.2fr)] items-center gap-x-6 border-b border-border bg-muted/40 px-5 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                  <p>{language === "en" ? "Title" : "Pamagat"}</p>
-                  <p>{language === "en" ? "Period" : "Saklaw"}</p>
-                  <p>{language === "en" ? "Office owner" : "May-ari ng opisina"}</p>
-                  <p>{language === "en" ? "Publish date" : "Petsa"}</p>
-                  <p>{language === "en" ? "Status" : "Status"}</p>
-                  <p>{language === "en" ? "File" : "File"}</p>
-                </div>
-                {reports.map((item) => (
-                  <div key={item.title.en} className="grid grid-cols-[minmax(0,2.6fr)_minmax(10rem,1.3fr)_minmax(11rem,1.5fr)_minmax(8rem,1fr)_minmax(7rem,0.9fr)_minmax(12rem,1.2fr)] items-start gap-x-6 border-b border-border/70 px-5 py-4 text-sm last:border-b-0">
-                    <p className="font-medium leading-6 text-foreground">{language === "en" ? item.title.en : item.title.fil}</p>
-                    <p className="leading-6 text-muted-foreground">{language === "en" ? item.period.en : item.period.fil}</p>
-                    <p className="leading-6 text-muted-foreground">{language === "en" ? item.owner.en : item.owner.fil}</p>
-                    <p className="leading-6 text-muted-foreground">{item.date}</p>
-                    <p className="leading-6 text-muted-foreground">{language === "en" ? item.status.en : item.status.fil}</p>
-                    <div className="flex items-center gap-2 leading-6 text-muted-foreground">
-                      <span>{item.file}</span>
-                      <a href={item.href} download={item.downloadName} className="text-sm font-semibold text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                        {language === "en" ? "Download" : "I-download"}
-                      </a>
+
+            {/* Transparency Seal document browser */}
+            <div className="rounded-[1.9rem] border border-border bg-card shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] overflow-hidden">
+              {/* Header */}
+              <div className="border-b border-border px-7 py-5 md:px-9">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div>
+                    <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
+                      <Files className="size-4" weight="bold" />
+                      {language === "en" ? "Transparency Seal — Official Documents" : "Transparency Seal — Mga Opisyal na Dokumento"}
                     </div>
+                    <p className="mt-3 text-sm leading-7 text-muted-foreground md:text-base">
+                      {language === "en"
+                        ? "Official accountability reports, financial disclosures, and procurement documents required under the Philippine Transparency Seal."
+                        : "Mga opisyal na ulat ng pananagutan, financial disclosures, at mga dokumento sa procurement na kinakailangan sa ilalim ng Philippine Transparency Seal."}
+                    </p>
                   </div>
-                ))}
+                </div>
+              </div>
+
+              {/* Two-column layout */}
+              <div className="flex flex-col lg:flex-row">
+                {/* Sidebar — category list */}
+                <nav
+                  aria-label={language === "en" ? "Report categories" : "Mga kategorya ng ulat"}
+                  className="shrink-0 lg:w-72 xl:w-80"
+                >
+                  {/* Mobile toggle */}
+                  <button
+                    type="button"
+                    className="flex w-full items-center justify-between gap-3 border-b border-border bg-muted/30 px-7 py-4 text-sm font-semibold text-foreground lg:hidden"
+                    onClick={() => setMobileOpen((o) => !o)}
+                    aria-expanded={mobileOpen}
+                    aria-controls="category-list"
+                  >
+                    <span className="flex items-center gap-2">
+                      <FolderOpen className="size-4 text-primary" weight="bold" />
+                      {language === "en" ? activeCategory.labelEn : activeCategory.labelFil}
+                    </span>
+                    <span className={`text-muted-foreground transition-transform duration-200 ${mobileOpen ? "rotate-180" : ""}`}>▾</span>
+                  </button>
+
+                  <ul
+                    id="category-list"
+                    role="tablist"
+                    aria-label={language === "en" ? "Report categories" : "Mga kategorya ng ulat"}
+                    className={`${mobileOpen ? "flex" : "hidden"} flex-col border-b border-border/60 py-2 lg:flex lg:border-b-0 lg:border-r lg:border-border/60 lg:py-4`}
+                  >
+                    {transparencyCategories.map((cat, idx) => {
+                      const isActive = cat.id === activeCategoryId;
+                      return (
+                        <li key={cat.id} role="presentation">
+                          <button
+                            type="button"
+                            role="tab"
+                            id={`cat-tab-${cat.id}`}
+                            aria-selected={isActive}
+                            aria-controls={`cat-panel-${cat.id}`}
+                            onClick={() => {
+                              setActiveCategoryId(cat.id);
+                              setSearch("");
+                              setMobileOpen(false);
+                            }}
+                            className={`w-full px-5 py-3 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ${
+                              isActive
+                                ? "bg-primary/8 font-semibold text-primary"
+                                : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                            }`}
+                          >
+                            <span className="flex items-start gap-2.5">
+                              <span className="mt-px shrink-0 text-xs font-semibold tabular-nums text-muted-foreground/60">
+                                {String(idx + 1).padStart(2, "0")}
+                              </span>
+                              <span className="leading-snug">
+                                {language === "en" ? cat.labelEn : cat.labelFil}
+                              </span>
+                            </span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </nav>
+
+                {/* Document panel */}
+                <div
+                  id={`cat-panel-${activeCategory.id}`}
+                  role="tabpanel"
+                  aria-labelledby={`cat-tab-${activeCategory.id}`}
+                  className="min-w-0 flex-1"
+                >
+                  {/* Category header + search */}
+                  <div className="border-b border-border/60 px-6 py-5 lg:px-8">
+                    <h2 className="text-base font-semibold text-foreground">
+                      {language === "en" ? activeCategory.labelEn : activeCategory.labelFil}
+                    </h2>
+                    <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                      {language === "en" ? activeCategory.descriptionEn : activeCategory.descriptionFil}
+                    </p>
+                    {activeCategory.links.length > 5 && (
+                      <div className="mt-4 flex items-center gap-2 rounded-xl border border-border bg-background/70 px-3 py-2">
+                        <MagnifyingGlass className="size-4 shrink-0 text-muted-foreground" weight="bold" />
+                        <input
+                          type="search"
+                          value={search}
+                          onChange={(e) => setSearch(e.target.value)}
+                          placeholder={language === "en" ? "Search documents in this category…" : "Maghanap ng dokumento sa kategoryang ito…"}
+                          className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+                          aria-label={language === "en" ? "Search documents" : "Maghanap ng dokumento"}
+                        />
+                        {search && (
+                          <button
+                            type="button"
+                            onClick={() => setSearch("")}
+                            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                            aria-label={language === "en" ? "Clear search" : "I-clear ang paghahanap"}
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Document list */}
+                  <ul className="divide-y divide-border/60" aria-label={language === "en" ? "Documents" : "Mga dokumento"}>
+                    {filteredLinks.length === 0 ? (
+                      <li className="flex flex-col items-center gap-3 px-6 py-12 text-center lg:px-8">
+                        <FolderOpen className="size-10 text-muted-foreground/40" weight="duotone" />
+                        <p className="text-sm text-muted-foreground">
+                          {search
+                            ? (language === "en" ? "No documents match your search." : "Walang dokumento na tumutugma sa iyong paghahanap.")
+                            : (language === "en" ? "No documents available for this category." : "Walang mga dokumento para sa kategoryang ito.")}
+                        </p>
+                      </li>
+                    ) : (
+                      filteredLinks.map((link, idx) => {
+                        const isDL = isDownloadLink(link.url);
+                        const ext = isDL ? link.url.split(".").pop()?.toUpperCase() : null;
+                        return (
+                          <li key={`${link.url}-${idx}`}>
+                            <a
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group flex items-center gap-4 px-6 py-4 transition-colors hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary lg:px-8"
+                            >
+                              {/* File type badge */}
+                              <span className={`shrink-0 rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                                ext === "PDF"
+                                  ? "bg-red-500/10 text-red-600 dark:text-red-400"
+                                  : ext === "XLSX" || ext === "XLS"
+                                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                  : ext === "ZIP"
+                                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                                  : "bg-primary/10 text-primary"
+                              }`}>
+                                {ext ?? "LINK"}
+                              </span>
+
+                              {/* Document name */}
+                              <span className="min-w-0 flex-1 text-sm font-medium leading-snug text-foreground group-hover:text-primary transition-colors">
+                                {link.text}
+                              </span>
+
+                              {/* Action icon */}
+                              <span className="shrink-0 text-muted-foreground transition-colors group-hover:text-primary" aria-hidden="true">
+                                {isDL
+                                  ? <DownloadSimple className="size-4" weight="bold" />
+                                  : <ArrowSquareOut className="size-4" weight="bold" />}
+                              </span>
+
+                              <span className="sr-only">
+                                {language === "en" ? "Opens in new tab" : "Magbubukas sa bagong tab"}
+                              </span>
+                            </a>
+                          </li>
+                        );
+                      })
+                    )}
+                  </ul>
+
+                  {/* Footer note */}
+                  <div className="border-t border-border/60 px-6 py-4 lg:px-8">
+                    <p className="text-xs text-muted-foreground">
+                      {language === "en"
+                        ? `${filteredLinks.length} document${filteredLinks.length !== 1 ? "s" : ""} in this category · Documents link to the official MMDA website (mmda.gov.ph).`
+                        : `${filteredLinks.length} dokumento sa kategoryang ito · Ang mga dokumento ay naka-link sa opisyal na website ng MMDA (mmda.gov.ph).`}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="rounded-[1.2rem] border border-border bg-background/70 p-5">
+
+            {/* Project tracker */}
+            <div className="rounded-[1.2rem] border border-border bg-card p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">{language === "en" ? "Project status tracker" : "Project status tracker"}</p>
               <div className="mt-4 space-y-3">
                 {projectTracker.map((item) => (
@@ -268,7 +458,15 @@ export default function TransparencyOverviewPage() {
                       <p className="shrink-0 text-muted-foreground">{language === "en" ? item.status.en : item.status.fil} • {item.progress}%</p>
                     </div>
                     <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-muted/60" aria-hidden="true">
-                      <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${item.progress}%` }} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={item.progress} aria-label={`${language === "en" ? item.project.en : item.project.fil} progress`} />
+                      <div
+                        className="h-full rounded-full bg-primary transition-all duration-500"
+                        style={{ width: `${item.progress}%` }}
+                        role="progressbar"
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={item.progress}
+                        aria-label={`${language === "en" ? item.project.en : item.project.fil} progress`}
+                      />
                     </div>
                   </div>
                 ))}
